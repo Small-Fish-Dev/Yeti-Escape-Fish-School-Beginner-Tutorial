@@ -1,0 +1,47 @@
+﻿@using Sandbox;
+@using System;
+@using Sandbox.UI;
+
+@namespace YetiEscape
+@inherits RootPanel
+
+<style>
+    HUD {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .gameText {
+        font-size: 60;
+        color: white;
+        font-family: Poppins;
+        font-weight: 600;
+        bottom: 150px;
+        text-stroke: 5px black;
+    }
+</style>
+
+<root>
+</root>
+
+@code {
+    [Event("DisplayText")]
+    public void DisplayText( string text )
+    {
+        var label = AddChild<Label>("gameText");
+        label.SetText(text);
+        DeleteAsync(label, 1500);
+    }
+
+    public async void DeleteAsync( Panel panel, int time )
+    {
+        await GameTask.Delay(time);
+        panel.Delete();
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(Time.Now);
+    }
+}
